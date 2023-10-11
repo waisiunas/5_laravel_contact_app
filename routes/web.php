@@ -4,6 +4,8 @@ use App\Http\Middleware\Authenticate;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ContactListController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Middleware\RedirectIfAuthenticated;
 
 /*
@@ -30,10 +32,25 @@ Route::controller(AuthController::class)->group(function () {
     });
 });
 
-Route::controller(ContactController::class)->middleware(Authenticate::class)->group(function () {
-    Route::get('contacts', 'index')->name('contacts');
-});
+Route::middleware(Authenticate::class)->group(function () {
+    Route::controller(ProfileController::class)->group(function () {
+        Route::get('profile/edit', 'edit')->name('profile.edit');
+        // Route::post('profile/details', 'update_details')->name('profile.details');
+        Route::patch('profile/details', 'update_details')->name('profile.details');
+        // Route::post('profile/password', 'update_password')->name('profile.password');
+        Route::patch('profile/password', 'update_password')->name('profile.password');
+    });
 
-Route::get('profile/edit', function() {
-    return view('profile.edit');
-})->name('profile.edit');
+    Route::controller(ContactListController::class)->group(function (){
+        Route::get('lists', 'index')->name('lists');
+        Route::get('list/create', 'create')->name('list.create');
+        Route::post('list/create', 'store');
+        Route::get('list/{contact_list}/edit', 'edit')->name('list.edit');
+        Route::patch('list/{contact_list}/edit', 'update');
+        Route::delete('list/{contact_list}/destroy', 'destroy')->name('list.destroy');
+    });
+
+    Route::controller(ContactController::class)->group(function () {
+        Route::get('contacts', 'index')->name('contacts');
+    });
+});
