@@ -13,7 +13,7 @@ class ContactListController extends Controller
     public function index()
     {
         return view('list.index', [
-            'contact_lists' => ContactList::all(),
+            'contact_lists' => ContactList::paginate(3),
         ]);
     }
 
@@ -22,7 +22,9 @@ class ContactListController extends Controller
      */
     public function create()
     {
-        return view('list.create');
+        return view('list.create', [
+            'contact_lists' => ContactList::all(),
+        ]);
     }
 
     /**

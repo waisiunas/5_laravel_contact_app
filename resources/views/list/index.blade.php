@@ -19,7 +19,7 @@
                         <div class="card-body">
                             @include('partials.alerts')
                             @if (count($contact_lists) > 0)
-                                <table class="table table-bordered m-0">
+                                <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Sr. No.</th>
@@ -45,6 +45,13 @@
                                         @endforeach
                                     </tbody>
                                 </table>
+
+                                <div class="row justify-content-end">
+                                    <div class="col-auto">
+                                        {{-- {{ $contact_lists->links('vendor.pagination.bootstrap-5') }} --}}
+                                        {{ $contact_lists->links() }}
+                                    </div>
+                                </div>
                             @else
                                 <div class="alert alert-info">No record found</div>
                             @endif

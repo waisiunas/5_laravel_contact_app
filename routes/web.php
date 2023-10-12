@@ -38,6 +38,7 @@ Route::middleware(Authenticate::class)->group(function () {
         // Route::post('profile/details', 'update_details')->name('profile.details');
         Route::patch('profile/details', 'update_details')->name('profile.details');
         // Route::post('profile/password', 'update_password')->name('profile.password');
+        Route::patch('profile/picture', 'update_picture')->name('profile.picture');
         Route::patch('profile/password', 'update_password')->name('profile.password');
     });
 
@@ -52,5 +53,10 @@ Route::middleware(Authenticate::class)->group(function () {
 
     Route::controller(ContactController::class)->group(function () {
         Route::get('contacts', 'index')->name('contacts');
+        Route::get('contact/create', 'create')->name('contact.create');
+        Route::post('contact/create', 'store');
+        Route::get('contact/{contact}/edit', 'edit')->name('contact.edit');
+        Route::patch('contact/{contact}/edit', 'update');
+        Route::delete('contact/{contact}/destroy', 'destroy')->name('contact.destroy');
     });
 });
