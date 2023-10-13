@@ -33,30 +33,35 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::middleware(Authenticate::class)->group(function () {
-    Route::controller(ProfileController::class)->group(function () {
-        Route::get('profile/edit', 'edit')->name('profile.edit');
-        // Route::post('profile/details', 'update_details')->name('profile.details');
-        Route::patch('profile/details', 'update_details')->name('profile.details');
-        // Route::post('profile/password', 'update_password')->name('profile.password');
-        Route::patch('profile/picture', 'update_picture')->name('profile.picture');
-        Route::patch('profile/password', 'update_password')->name('profile.password');
+    Route::controller(ProfileController::class)->prefix('profile')->name('profile.')->group(function () {
+        Route::get('edit', 'edit')->name('edit');
+        // Route::post('details', 'update_details')->name('details');
+        Route::patch('details', 'update_details')->name('details');
+        // Route::post('password', 'update_password')->name('password');
+        Route::patch('picture', 'update_picture')->name('picture');
+        Route::patch('password', 'update_password')->name('password');
     });
 
-    Route::controller(ContactListController::class)->group(function (){
+    Route::controller(ContactListController::class)->group(function () {
         Route::get('lists', 'index')->name('lists');
-        Route::get('list/create', 'create')->name('list.create');
-        Route::post('list/create', 'store');
-        Route::get('list/{contact_list}/edit', 'edit')->name('list.edit');
-        Route::patch('list/{contact_list}/edit', 'update');
-        Route::delete('list/{contact_list}/destroy', 'destroy')->name('list.destroy');
+        Route::prefix('list')->name('list.')->group(function () {
+            Route::get('create', 'create')->name('create');
+            Route::post('create', 'store');
+            Route::get('{contact_list}/edit', 'edit')->name('edit');
+            Route::patch('{contact_list}/edit', 'update');
+            Route::delete('{contact_list}/destroy', 'destroy')->name('destroy');
+        });
     });
 
     Route::controller(ContactController::class)->group(function () {
         Route::get('contacts', 'index')->name('contacts');
-        Route::get('contact/create', 'create')->name('contact.create');
-        Route::post('contact/create', 'store');
-        Route::get('contact/{contact}/edit', 'edit')->name('contact.edit');
-        Route::patch('contact/{contact}/edit', 'update');
-        Route::delete('contact/{contact}/destroy', 'destroy')->name('contact.destroy');
+        Route::prefix('contact')->name('contact.')->group(function () {
+            Route::get('create', 'create')->name('create');
+            Route::post('create', 'store');
+            Route::get('{contact}/show', 'show')->name('show');
+            Route::get('{contact}/edit', 'edit')->name('edit');
+            Route::patch('{contact}/edit', 'update');
+            Route::delete('{contact}/destroy', 'destroy')->name('destroy');
+        });
     });
 });

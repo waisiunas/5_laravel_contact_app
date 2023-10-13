@@ -18,24 +18,36 @@
                     <div class="card">
                         <div class="card-body">
                             @include('partials.alerts')
-                            {{-- @if (count($contact_lists) > 0)
+                            @if (count($contacts) > 0)
                                 <table class="table table-bordered">
                                     <thead>
                                         <tr>
                                             <th>Sr. No.</th>
                                             <th>Name</th>
+                                            <th>List</th>
+                                            <th>Phone Number</th>
+                                            <th>Email</th>
+                                            <th>DoB</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
 
                                     <tbody>
-                                        @foreach ($contact_lists as $contact_list)
+                                        @foreach ($contacts as $contact)
                                             <tr>
                                                 <td>{{ $loop->iteration }}</td>
-                                                <td>{{ $contact_list->name }}</td>
+                                                <td>{{ $contact->first_name . ' ' . $contact->middle_name . ' ' . $contact->last_name }}
+                                                </td>
+                                                <td>{{ $contact->contact_list->name }}</td>
+                                                <td>{{ $contact->phone_number }}</td>
+                                                <td>{{ $contact->email }}</td>
+                                                <td>{{ $contact->dob }}</td>
                                                 <td>
-                                                    <a href="{{ route('list.edit', $contact_list) }}" class="btn btn-primary">Edit</a>
-                                                    <form action="{{ route('list.destroy', $contact_list) }}" method="post" class="d-inline">
+                                                    {{-- <a href="{{ route('contact.edit', $contact) }}" class="btn btn-primary">Edit</a> --}}
+                                                    <a href="{{ route('contact.show', $contact) }}"
+                                                        class="btn btn-primary">Show</a>
+                                                    <form action="{{ route('contact.destroy', $contact) }}" method="post"
+                                                        class="d-inline">
                                                         @csrf
                                                         @method('DELETE')
                                                         <input type="submit" value="Delete" class="btn btn-danger">
@@ -46,14 +58,14 @@
                                     </tbody>
                                 </table>
 
-                                <div class="row justify-content-end">
+                                {{-- <div class="row justify-content-end">
                                     <div class="col-auto">
-                                        {{ $contact_lists->links('vendor.pagination.bootstrap-5') }}
+                                        {{ $contacts->links('vendor.pagination.bootstrap-5') }}
                                     </div>
-                                </div>
+                                </div> --}}
                             @else
                                 <div class="alert alert-info">No record found</div>
-                            @endif --}}
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -62,4 +74,3 @@
         </div>
     </main>
 @endsection
-
